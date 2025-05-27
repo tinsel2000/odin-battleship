@@ -1,0 +1,9 @@
+{
+  "main": "gameDisplay.js",
+  "type": "module"
+}
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
