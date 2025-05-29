@@ -266,7 +266,7 @@ function clickShip(event) {
                     boardTiles[i].replaceWith(boardTiles[i].cloneNode(true));
                 }
                 if (allShipsPlaced()) {
-                    document.querySelector('.guide').textContent = 'All ships have been placed, the game can now begin';
+                    document.querySelector('.guide').textContent = 'All ships have been placed, the game can now begin. Click any tile in Enemy Waters to attack';
                     startGame();
                 }
             }
