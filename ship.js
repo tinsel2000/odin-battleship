@@ -9,7 +9,7 @@ export class ship {
     isSunk() {
         if (this.hits === this.length) {
             this.sunk = true
-            console.log('Ship has been sunk');
+            console.log('Ship has been sunk' + this.sunk);
             return true;
         } else {
             return false;

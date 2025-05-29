@@ -17,14 +17,24 @@ const gameControl = (function gameControl() {
         //console.log(`initBoards output: ${player2.water.board[0][1]}`);
     }
 
-    function placeUserShips(coord, alignment, shipName) {
-        player1.water.board.placeShip(coord, alignment, shipName);
+    function allShipsPlaced(){
+        if (player1.water.activeShips.length === 5){
+            console.log('All ships placed, game can begin');
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function placeUserShips(coord, alignment, inputName) {
+        console.log(`placeUserShips inputname: ${inputName}. ships: ${Object.values(player1.ships[inputName])}`);
+        const shipName = Object.values(player1.ships[inputName])
+        //console.log(`placeUserShips ship found: ${shipName} from ${inputName}`);
+        return player1.water.placeShip(coord, alignment, shipName);
     }
 
     function turnPlayer(coord) {
-        if ( player2.receiveAttack(coord) === true ) {
-            return isLoser('player2');
-        }
+        return player2.receiveAttack(coord)
     }
 
     function placeComputerShips() {
@@ -39,7 +49,7 @@ const gameControl = (function gameControl() {
         for (let i = 0; i < numShips; i++) {
             let randomCoord = [];
             let randomAlignment = ''
-            if (getRandomInt(1) === 0){
+            if (getRandomInt(2) === 0){
                  randomAlignment = 'Vertical'
             } else {
                 randomAlignment = 'Horizontal'
@@ -66,8 +76,10 @@ const gameControl = (function gameControl() {
 
     function isLoser(input) {
         if (input === 'player2') {
+            console.log(`Checking player2 ships sunk`);
             return player2.checkAllShipsSunk();
         } else {
+            console.log(`checking player1 ships sunk`);
             return player1.checkAllShipsSunk();
         }
     }
@@ -79,11 +91,12 @@ const gameControl = (function gameControl() {
         placeComputerShips,
         turnPlayer,
         turnComputer,
-        isLoser
+        isLoser,
+        allShipsPlaced
     }
 
 })();
 
-const {initPlayers, initBoards, placeUserShips, placeComputerShips, turnPlayer, turnComputer, isLoser} = gameControl;
+const {initPlayers, initBoards, placeUserShips, placeComputerShips, turnPlayer, turnComputer, isLoser, allShipsPlaced} = gameControl;
 
-export {initPlayers, initBoards, placeUserShips, placeComputerShips, turnPlayer, turnComputer, isLoser};
+export {initPlayers, initBoards, placeUserShips, placeComputerShips, turnPlayer, turnComputer, isLoser, allShipsPlaced};

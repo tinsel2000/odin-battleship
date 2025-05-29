@@ -13,12 +13,26 @@
     <div class="board">
 
     </div>
+    <div class="board2">
+
+    </div>
+    <div class="boatdock">
+        <div id="carrier" class="boat">Carrier</div>
+        <div id="battleship" class="boat">Battleship</div>
+        <div id="cruiser" class="boat">Cruiser</div>
+        <div id="submarine" class="boat">Submarine</div>
+        <div id="destroyer" class="boat">Destroyer</div>
+    </div>
     <div class="sidepanel">
-        <div class="inputpanel">
-            Please Input Name:
-        </div>
+        <form class="inputpanel">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name">
+            <input type="submit" value="Start Game!" id="startgame">
+        </form>
+        <div class="guide"></div>
         <div class="infopanel">
             Current Game History:
+            <div class="historyline"></div>
         </div>
     </div>
 </body>

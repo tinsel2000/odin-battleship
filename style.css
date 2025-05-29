@@ -1,12 +1,51 @@
-.board {
-    width: 66%;
-    display: grid;
-    grid-template-columns: 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px;
-    grid-column-gap: 7px;
-    grid-row-gap: 7px;
+* {
+    padding: 3px;
 }
 
+.board {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px;
+    grid-column-gap: 20px;
+    grid-row-gap: 7px;
+    
+}
+
+.board > * {
+    border: solid;
+    border-color: black;
+    border-width: 1px;
+    text-align: center;
+    aspect-ratio: 1 / 1;
+    width: 40px;
+}
+
+/* when div1 is hovered make div2 blue */
+body:has(#c10:hover) #c11 {
+  background-color: blue;
+}
+
+.boardtileplacement:hover,
+.boardtileshiphov {
+    background-color: green;
+}
+/*
+.board > *:hover {
+    background-color: greenyellow;
+}
+*/
 
 .sidepanel {
     width: 33%;
+    border: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+.sidepanel > * {
+    border: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 10px;
+    margin: 5px;
 }

@@ -34,6 +34,7 @@ export class player {
     }
 
     receiveAttack(coord) {
+        console.log(`Receiving attack to ${this.name}`);
         const isHit = this.water.receiveAttack(coord);
         if (isHit) {
             return this.checkShipHit(coord)
@@ -41,10 +42,15 @@ export class player {
     }
 
     checkShipsSunk() {
-        const shipsSunk = 0;
-        for (let i = 0; i in this.ships; i++) {
-            if (this.ships[i].isSunk === true) {
+        let shipsSunk = 0;
+        const numOfShips = Object.keys(this.ships).length;
+        const valuesOfShips = Object.values(this.ships);
+        for (let i = 0; i < numOfShips; i++) {
+            console.log(`Checking if ${JSON.stringify(valuesOfShips[i])} is sunk`);
+            if (valuesOfShips[i].isSunk() === true) {
+                console.log('Adding 1 to total ships sunk');
                 shipsSunk += 1;
+            } else {
             }
         }
         this.shipsSunk = shipsSunk;
@@ -53,6 +59,7 @@ export class player {
 
     checkAllShipsSunk() {
         if (this.checkShipsSunk() === 5) {
+            console.log('All ships sunk');
             return true;
         } else {
             return false;
