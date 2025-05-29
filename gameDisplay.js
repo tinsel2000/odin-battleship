@@ -97,11 +97,11 @@ function unusedshotHit(event) {
 
 function shotHit(coords, friendly, targetHit) {
     let coordSignifier = 'c';
-    let friendSignifier = 'Enemy';
+    let friendSignifier = 'Friendly';
     let textUpdate = 'Shot has missed';
     if (friendly === true){
         coordSignifier = 'e';
-        friendSignifier = 'Friendly';
+        friendSignifier = 'Enemy';
         //addHistory('Enemy ship has been hit!');
     } else {
         //addHistory('Friendly ship has been hit!');
@@ -213,9 +213,12 @@ function mouseOut(input) {
 }
 function mouseLock(input) { input.classList.add('locked') }
 
-let shipAlignmentHorizontal = true;
+let shipAlignmentHorizontal = false;
 function clickShip(event) {
-    shipAlignmentHorizontal = shipAlignmentHorizontal ? false : true;
+    if(!event.currentTarget.classList.contains('unclicked')) {
+        shipAlignmentHorizontal = shipAlignmentHorizontal ? false : true;
+    }
+    event.currentTarget.classList.remove('unclicked');
     if (shipAlignmentHorizontal === true) {
         document.querySelector('.alignment').textContent = 'Current Alignment: Horizontal'
     } else {
@@ -309,5 +312,5 @@ startPlacement()
 
 //remove later
 //addBoardTiles(divBoardEnemy);
-addInteractivityShots();
-startGame();
+//addInteractivityShots();
+//startGame();

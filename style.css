@@ -2,8 +2,22 @@
     padding: 3px;
 }
 
+.maindisplay {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 40%;
+    flex-wrap:wrap;
+}
+
+.maindisplay > * {
+    margin: 5px;
+    padding: 20px;
+    border: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
 .board {
-    width: 100%;
     display: grid;
     grid-template-columns: 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px;
     grid-column-gap: 20px;
@@ -18,6 +32,14 @@
     text-align: center;
     aspect-ratio: 1 / 1;
     width: 40px;
+}
+
+.boat {
+    border: solid;
+    border-color: black;
+    border-width: 1px;
+    margin: 5px;
+    padding: 7px;
 }
 
 /* when div1 is hovered make div2 blue */
@@ -35,12 +57,6 @@ body:has(#c10:hover) #c11 {
 }
 */
 
-.sidepanel {
-    width: 33%;
-    border: solid;
-    border-color: black;
-    border-width: 1px;
-}
 
 .sidepanel > * {
     border: solid;
@@ -50,7 +66,6 @@ body:has(#c10:hover) #c11 {
     margin: 5px;
 }
 
-.toppanel {
-    display: flex;
-    justify-content: justify-content: flex-start;
+.infopanel {
+    min-height: 140px;
 }

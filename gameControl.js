@@ -27,8 +27,8 @@ const gameControl = (function gameControl() {
     }
 
     function placeUserShips(coord, alignment, inputName) {
-        console.log(`placeUserShips inputname: ${inputName}. ships: ${Object.values(player1.ships[inputName])}`);
-        const shipName = Object.values(player1.ships[inputName])
+        console.log(`placeUserShips inputname: ${inputName}. ships: ${player1.ships[inputName].name}`);
+        const shipName = player1.ships[inputName];
         //console.log(`placeUserShips ship found: ${shipName} from ${inputName}`);
         return player1.water.placeShip(coord, alignment, shipName);
     }
@@ -60,6 +60,7 @@ const gameControl = (function gameControl() {
             while (shipPlaced === false) {
                 randomCoord = [getRandomInt(9), getRandomInt(9)]
                 shipPlaced = player2.water.placeShip(randomCoord, randomAlignment, Object.values(player2.ships)[i]);
+                //console.log(`placeUserShips ship: ${Object.values(player2.ships[i])}`);
                 //console.log(`placeComputerShips Placing ship name: ${Object.values(player2.ships)[i].name} coord: ${randomCoord}`);
                 //console.log(`Is hasShip true?: ${player2.water.board[randomCoord[1]][randomCoord[0]].hasShip}`);
                 shipPlacedAttempts += 1;

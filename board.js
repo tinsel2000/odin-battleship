@@ -23,7 +23,7 @@ export class gameboard {
     }
 
     placeShip(coordinate, alignment, ship){
-        console.log(`placeShip ${ship.name} ${alignment} coords x: ${coordinate[0]}, coords y: ${coordinate[1]}`);
+        console.log(`placeShip ${ship} ${alignment} coords x: ${coordinate[0]}, coords y: ${coordinate[1]}`);
         if (this.checkCoordsValid(coordinate, alignment, ship) === false) {
             console.log( 'Error, coordinates not valid, retrying');
             return false;
@@ -38,15 +38,16 @@ export class gameboard {
                 for (let i = 0; i < ship.length; i++) {
                     //console.log(`placeShip Placing ship coords: ${coordinate[0]} and ${[coordinate[1] + i]}`);
                     this.board[coordinate[1] + i][coordinate[0]].hasShip = true;
-                    this.board[coordinate[1] + i][coordinate[0]].shipName = ship.name;
-                    //console.log(`placeShip Placing ${ship.name} here: ${[coordinate[1] + i][coordinate[0]]}`);
+                    this.board[coordinate[1] + i][coordinate[0]].shipName = ship;
+                    console.log(`placeShip Placing ${ship} here: coords x: ${coordinate[0]}, coords y: ${coordinate[1] + i}`);
                 }
                 break;
             case 'Horizontal':
                 //console.log('Horizontally aligning ship');
                 for (let i = 0; i < ship.length; i++) {
                     this.board[coordinate[1]][coordinate[0] + i].hasShip = true;
-                    this.board[coordinate[1]][coordinate[0] + i].shipName = ship.name;
+                    this.board[coordinate[1]][coordinate[0] + i].shipName = ship;
+                    console.log(`placeShip Placing ${ship} here: coords x: ${coordinate[0] + i}, coords y: ${coordinate[1]}`);
                 }
                 break;
         }

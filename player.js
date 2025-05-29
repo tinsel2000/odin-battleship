@@ -18,14 +18,17 @@ export class player {
         return this.water.board;
     }
 
-    markShipHit(shipName) {
+    markShipHit(ship) {
+        let shipName = ship.name;
+        console.log(ship);
+        console.log(shipName);
         this.ships[shipName].isHit();
     }
 
     checkShipHit(coordinate) {
         if (this.water.board[coordinate[1]][coordinate[0]].hasShip === true) {
             let shipName = this.water.board[coordinate[1]][coordinate[0]].shipName;
-            //console.log(`shipName hit: ${shipName}`);
+            console.log(`shipName hit: ${shipName}. Coord checked: ${this.water.board[coordinate[1]][coordinate[0]]}`);
             this.markShipHit(shipName);
             //console.log(`checkShipHit true`);
             return true;
