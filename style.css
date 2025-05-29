@@ -49,3 +49,8 @@ body:has(#c10:hover) #c11 {
     padding: 10px;
     margin: 5px;
 }
+
+.toppanel {
+    display: flex;
+    justify-content: justify-content: flex-start;
+}

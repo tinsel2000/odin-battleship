@@ -27,16 +27,20 @@ export class player {
             let shipName = this.water.board[coordinate[1]][coordinate[0]].shipName;
             //console.log(`shipName hit: ${shipName}`);
             this.markShipHit(shipName);
+            //console.log(`checkShipHit true`);
             return true;
         } else {
+            //console.log(`checkShipHit false`);
             return false;
         }
     }
 
     receiveAttack(coord) {
-        console.log(`Receiving attack to ${this.name}`);
+        //console.log(`receiveAttack coord: ${coord}`);
+        //console.log(`Receiving attack to ${this.name}`);
         const isHit = this.water.receiveAttack(coord);
         if (isHit) {
+            //console.log(`receiveAttack ship has been hit`);
             return this.checkShipHit(coord)
         }
     }
@@ -46,9 +50,9 @@ export class player {
         const numOfShips = Object.keys(this.ships).length;
         const valuesOfShips = Object.values(this.ships);
         for (let i = 0; i < numOfShips; i++) {
-            console.log(`Checking if ${JSON.stringify(valuesOfShips[i])} is sunk`);
+            //console.log(`Checking if ${JSON.stringify(valuesOfShips[i])} is sunk`);
             if (valuesOfShips[i].isSunk() === true) {
-                console.log('Adding 1 to total ships sunk');
+                //console.log('Adding 1 to total ships sunk');
                 shipsSunk += 1;
             } else {
             }

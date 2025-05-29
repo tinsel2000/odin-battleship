@@ -60,18 +60,22 @@ const gameControl = (function gameControl() {
             while (shipPlaced === false) {
                 randomCoord = [getRandomInt(9), getRandomInt(9)]
                 shipPlaced = player2.water.placeShip(randomCoord, randomAlignment, Object.values(player2.ships)[i]);
+                //console.log(`placeComputerShips Placing ship name: ${Object.values(player2.ships)[i].name} coord: ${randomCoord}`);
+                //console.log(`Is hasShip true?: ${player2.water.board[randomCoord[1]][randomCoord[0]].hasShip}`);
                 shipPlacedAttempts += 1;
                 if (shipPlacedAttempts === 10) { break }
             } 
         }
     }
 
-    function turnComputer() {
-         function getRandomInt(max) {
+    function turnComputer(coord) {
+        /*
+        function getRandomInt(max) {
             return Math.floor(Math.random() * max);
         };
         const randomCoord = [getRandomInt(9), getRandomInt(9)];
-        player1.receiveAttack(coord)
+        */
+        return player1.receiveAttack(coord)
     }
 
     function isLoser(input) {

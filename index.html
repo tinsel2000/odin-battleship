@@ -10,30 +10,34 @@
 </head>
 <body>
     <div class="titlebar">Battleship</div>
-    <div class="board">
-
-    </div>
-    <div class="board2">
-
-    </div>
-    <div class="boatdock">
-        <div id="carrier" class="boat">Carrier</div>
-        <div id="battleship" class="boat">Battleship</div>
-        <div id="cruiser" class="boat">Cruiser</div>
-        <div id="submarine" class="boat">Submarine</div>
-        <div id="destroyer" class="boat">Destroyer</div>
-    </div>
-    <div class="sidepanel">
-        <form class="inputpanel">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name">
-            <input type="submit" value="Start Game!" id="startgame">
-        </form>
-        <div class="guide"></div>
-        <div class="infopanel">
-            Current Game History:
-            <div class="historyline"></div>
+    <div class="toppanel">
+        <div class="sidepanel">
+            <form class="inputpanel">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name">
+                <input type="submit" value="Start Game!" id="startgame" onclick="return false">
+            </form>
+            <div class="guide"></div>
+            <div class="infopanel">
+                Current Game History:
+                <div class="historyline"></div>
+            </div>
         </div>
+        <div class="boatdock">
+            Ship Dock:  
+            <div id="carrier" class="boat">Carrier</div>
+            <div id="battleship" class="boat">Battleship</div>
+            <div id="cruiser" class="boat">Cruiser</div>
+            <div id="submarine" class="boat">Submarine</div>
+            <div id="destroyer" class="boat">Destroyer</div>
+            <div class="alignment">Current Alignment: Vertical</div>        
+        </div>
+    </div>
+    <div class="boarddisplayE">Enemy
+        <div class="boardEnemy board"></div>
+    </div>
+    <div class="boarddisplayF">Friendly Waters
+        <div class="boardFriendly board"></div>
     </div>
 </body>
 </html>

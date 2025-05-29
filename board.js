@@ -23,9 +23,9 @@ export class gameboard {
     }
 
     placeShip(coordinate, alignment, ship){
-        console.log(`placeShip ${ship} ${alignment} coords x: ${coordinate[0]}, coords y: ${coordinate[1]}`);
+        console.log(`placeShip ${ship.name} ${alignment} coords x: ${coordinate[0]}, coords y: ${coordinate[1]}`);
         if (this.checkCoordsValid(coordinate, alignment, ship) === false) {
-            console.error( 'Error, coordinates not valid');
+            console.log( 'Error, coordinates not valid, retrying');
             return false;
         }
         if (!this.board) {
@@ -35,16 +35,16 @@ export class gameboard {
         switch (alignment) {
             case 'Vertical':
                 //console.log('Vertically aligning ship');
-                for (let i = 0; i < ship[length]; i++) {
-                    console.log(`Placing ship coords: ${coordinate[0]} and ${[coordinate[1] + i]}`);
+                for (let i = 0; i < ship.length; i++) {
+                    //console.log(`placeShip Placing ship coords: ${coordinate[0]} and ${[coordinate[1] + i]}`);
                     this.board[coordinate[1] + i][coordinate[0]].hasShip = true;
                     this.board[coordinate[1] + i][coordinate[0]].shipName = ship.name;
-                    //console.log(`Placing ${ship.name}`);
+                    //console.log(`placeShip Placing ${ship.name} here: ${[coordinate[1] + i][coordinate[0]]}`);
                 }
                 break;
             case 'Horizontal':
                 //console.log('Horizontally aligning ship');
-                for (let i = 0; i < ship[length]; i++) {
+                for (let i = 0; i < ship.length; i++) {
                     this.board[coordinate[1]][coordinate[0] + i].hasShip = true;
                     this.board[coordinate[1]][coordinate[0] + i].shipName = ship.name;
                 }
@@ -60,7 +60,7 @@ export class gameboard {
             return false;
         } else {
             this.board[coordinate[1]][coordinate[0]].isHit = true;
-            console.log(`Target hit: ${coordinate[0]}, ${coordinate[1]}`);
+            //console.log(`Target hit: ${coordinate[0]}, ${coordinate[1]}`);
             return true;
         }
     }
@@ -72,32 +72,25 @@ export class gameboard {
         switch (alignment) {
             case 'Vertical':
                 //console.log('case vertical');
-                for (let i = 0; i < ship[length]; i++) {
+                for (let i = 0; i < ship.length; i++) {
                     //console.log(`Checking coordinate x: ${coordinate[0]} and coordinate y: ${coordinate[1] + i}`);
-                    if (
-                        (coordinate[1] >= 0 && coordinate[1] <= 9) && 
-                        (this.board[coordinate[1] + i][coordinate[0]].hasShip === false)
-                    ) {
+                    if (coordinate[1] + i >= 0 && coordinate[1] + i <= 9) {
+                        if (this.board[coordinate[1] + i][coordinate[0]].hasShip === false) {
+                        } else {return false;}
                         //console.log(`Coord valid`);
-                    } else {
-                        console.log(`Coord invalid. Does it have a ship?: ${this.board[coordinate[1] + i][coordinate[0]].hasShip}`);
-                        return false;
-                    }
+                    } else {return false;}
                 };
                 break;
             case 'Horizontal':
                 //console.log('case horizontal');
-                for (let i = 0; i < ship[length]; i++) {
-                    console.log(`Checking coordinate x: ${coordinate[0] + i} and coordinate y: ${coordinate[1]}`);
-                    if (
-                        (coordinate[0] >= 0 && coordinate[0] <= 9) &&
-                        (this.board[coordinate[1]][coordinate[0] + i].hasShip === false)
-                    ) {
+                for (let i = 0; i < ship.length; i++) {
+                    //console.log(`Checking this thing: ${this.board[coordinate[1]][coordinate[0] + i]}`);
+                    //console.log(`Checking coordinate x: ${coordinate[0] + i} and coordinate y: ${coordinate[1]}`);
+                    if (coordinate[0] + i >= 0 && coordinate[0] + i <= 9) {
+                        if (this.board[coordinate[1]][coordinate[0] + i].hasShip === false) {
+                        } else {return false;}
                         //console.log(`Coord valid`);
-                    } else {
-                        console.log(`Coord invalid`);
-                        return false;
-                    }
+                    } else {return false;}
                 }
                 break;
         }
