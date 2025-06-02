@@ -37,6 +37,10 @@ const gameControl = (function gameControl() {
         return player2.receiveAttack(coord)
     }
 
+    function turnComputer(coord) {
+        return player1.receiveAttack(coord)
+    }
+
     function placeComputerShips() {
 
         function getRandomInt(max) {
@@ -58,7 +62,7 @@ const gameControl = (function gameControl() {
             let shipPlaced = false
             let shipPlacedAttempts = 0
             while (shipPlaced === false) {
-                randomCoord = [getRandomInt(9), getRandomInt(9)]
+                randomCoord = [getRandomInt(10), getRandomInt(10)]
                 shipPlaced = player2.water.placeShip(randomCoord, randomAlignment, Object.values(player2.ships)[i]);
                 //console.log(`placeUserShips ship: ${Object.values(player2.ships[i])}`);
                 //console.log(`placeComputerShips Placing ship name: ${Object.values(player2.ships)[i].name} coord: ${randomCoord}`);
@@ -67,16 +71,6 @@ const gameControl = (function gameControl() {
                 if (shipPlacedAttempts === 10) { break }
             } 
         }
-    }
-
-    function turnComputer(coord) {
-        /*
-        function getRandomInt(max) {
-            return Math.floor(Math.random() * max);
-        };
-        const randomCoord = [getRandomInt(9), getRandomInt(9)];
-        */
-        return player1.receiveAttack(coord)
     }
 
     function isLoser(input) {

@@ -58,11 +58,11 @@ export class gameboard {
     receiveAttack(coordinate) {
         if (this.board[coordinate[1]][coordinate[0]].isHit === true) {
             console.log ('Target already chosen');
-            return false;
+            return 'hitInvalid';
         } else {
             this.board[coordinate[1]][coordinate[0]].isHit = true;
             //console.log(`Target hit: ${coordinate[0]}, ${coordinate[1]}`);
-            return true;
+            return 'hitValid';
         }
     }
 

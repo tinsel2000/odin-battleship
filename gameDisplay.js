@@ -1,16 +1,45 @@
 import { initPlayers, initBoards, placeUserShips, placeComputerShips, turnPlayer, turnComputer, isLoser, allShipsPlaced} from './gameControl.js';
 import { player } from './player.js';
+import {getRandomInt, replaceAt, convertCoordsBack, convertCoordsFront} from './displayTools.js'
 
-function replaceAt(string, char, index) {
-  return string.substr(0, index) + char + string.substr(index + 1);
-}
+function parseTiles(event, shipLength, shipAlignmentHorizontal, query) {
+    let boardTiles = document.querySelectorAll('.boardtile');
+    let targetId = event.currentTarget.id;
+    switch(shipAlignmentHorizontal) {
+        case false: 
+            for (let i = 0; i < shipLength; i++) {
+                let nextXCoord = parseInt(targetId[2]) + i;
+                if (nextXCoord <= 9) {
+                    let nextId = replaceAt(targetId, nextXCoord, 2);
+                    let nextTile = document.getElementById(nextId)
+                    query(nextTile);
+                }
+            }
+            break;
+        case true: 
+            for (let i = 0; i < shipLength; i++) {
+                let nextXCoord = parseInt(targetId[1]) + i
+                if (nextXCoord <= 9) {
+                    let nextId = replaceAt(targetId, nextXCoord, 1);
+                    let nextTile = document.getElementById(nextId)
+                    query(nextTile);
+                }
+            }
+            break;
+    }
+};
 
 function addBoardTiles(board) {
     //let divBoard = document.querySelector(".board");
+    while (board.firstChild) {
+        console.log(`Removing child ${board.firstChild}`);
+        board.removeChild(board.firstChild);
+    }
     let coordSymbol = 'c'
     if (board.classList.contains('boardEnemy')) {
         coordSymbol = 'e'
     }
+
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
             //create 10 buttons
@@ -36,9 +65,27 @@ function placeShip(event, shipName, shipAlignmentHorizontal){
         return placeUserShips(coords, alignment, shipName);
 }
 
-function getRandomInt(max) {
-            return Math.floor(Math.random() * max);
-        };
+function shotTakenComputer() {
+    let friendly = false;
+    const randomCoord = [getRandomInt(10), getRandomInt(10)];
+    let computerTurnResult = turnComputer(randomCoord);
+    if ( computerTurnResult === 'hitShip') {
+        let shipHit = true;
+        let friendly = false;
+        console.log(`Computer turn taken`);
+        shotHit(convertCoordsFront(randomCoord), friendly, shipHit);
+    } else if (computerTurnResult === 'hitWater') {
+        let shipHit = false;
+        let friendly = false;
+        shotHit(convertCoordsFront(randomCoord), friendly, shipHit)
+        console.log(shipHit);
+    } else if (computerTurnResult === 'hitInvalid') {
+        shotTakenComputer();
+    }
+    if ( isLoser('player1') === true ) {
+            displayWinner('Computer');
+        }
+}
 
 function shotTaken(event) {
     let coords = convertCoordsBack(event);
@@ -47,55 +94,26 @@ function shotTaken(event) {
         console.log('Turn not taken');
         return;
     }
-    if ( turnPlayer(coords) === true) {
+    let playerTurnResult = turnPlayer(coords);
+    if ( playerTurnResult === 'hitShip') {
         //console.log(`turnPlayer(coords) === true)`)
-        let targetHit = true;
+        let shipHit = true;
         let friendly = true;
-        shotHit(convertCoordsFront(coords), friendly, targetHit);
+        shotHit(convertCoordsFront(coords), friendly, shipHit);
         if ( isLoser('player2') === true ) {
             displayWinner(playerName);
         }
-        //console.log(targetHit);
-    } else {
-        let targetHit = false;
+        //console.log(shipHit);
+    } else if ( playerTurnResult === 'hitWater' ) {
+        let shipHit = false;
         let friendly = true;
-        shotHit(convertCoordsFront(coords), friendly, targetHit)
-        //console.log(targetHit);
+        shotHit(convertCoordsFront(coords), friendly, shipHit)
+        //console.log(shipHit);
     }
-    //console.log(`shotTaken shot miss`)
-    //shotMiss(event);
-    let friendly = false;
-    const randomCoord = [getRandomInt(9), getRandomInt(9)];
-    if ( turnComputer(randomCoord) === true) {
-        let targetHit = true;
-        let friendly = false;
-        console.log(`Computer turn taken`);
-        shotHit(convertCoordsFront(randomCoord), friendly, targetHit);
-    } else {
-        let targetHit = false;
-        let friendly = false;
-        shotHit(convertCoordsFront(randomCoord), friendly, targetHit)
-        console.log(targetHit);
-    }
+    shotTakenComputer()
 }
 
-function shotMiss(event) {
-    event.currentTarget.textContent = '';
-    event.currentTarget.style.borderRadius = '50%';
-    event.currentTarget.classList.add("hittile")
-    event.currentTarget.style.backgroundColor = 'blue';
-    addHistory('Shot missed');
-}
-
-function unusedshotHit(event) {
-    event.currentTarget.textContent = '';
-    event.currentTarget.style.borderRadius = '50%';
-    event.currentTarget.classList.add("hittile")
-    event.currentTarget.style.backgroundColor = 'red';
-    addHistory('Ship has been hit!');
-}
-
-function shotHit(coords, friendly, targetHit) {
+function shotHit(coords, friendly, shipHit) {
     let coordSignifier = 'c';
     let friendSignifier = 'Friendly';
     let textUpdate = 'Shot has missed';
@@ -107,7 +125,7 @@ function shotHit(coords, friendly, targetHit) {
         //addHistory('Friendly ship has been hit!');
     }
     let tile = document.getElementById(coordSignifier + coords);
-    if (targetHit === true){
+    if (shipHit === true){
         textUpdate = friendSignifier + ' ship has been hit!';
         addHistory(textUpdate);
         tile.style.backgroundColor = 'red';
@@ -157,53 +175,14 @@ function addInteractivityShots() {
 }
 
 function removeInteractivity() {
+    console.log(`removeInteractivity run`);
     let divTiles = document.querySelectorAll(".boardtile");
     for (let i = 0; i < divTiles.length; i++) {
-        divTiles[i].removeEventListener("click", shotTaken)
+        divTiles[i].replaceWith(divTiles[i].cloneNode(true));
+    //    divTiles[i].removeEventListener("click", shotTaken)
+    //    
     }
 }
-
-function convertCoordsBack(event) {
-    let targetId = event.currentTarget.id;
-    let coords = [];
-    coords.push(parseInt(targetId[1]));
-    coords.push(parseInt(targetId[2]));
-    return coords;
-}
-
-function convertCoordsFront(input) {
-    let string = '';
-    string += input[0];
-    string += input[1];
-    return string;
-}
-
-function parseTiles(event, shipLength, shipAlignmentHorizontal, query) {
-    let boardTiles = document.querySelectorAll('.boardtile');
-    let targetId = event.currentTarget.id;
-    switch(shipAlignmentHorizontal) {
-        case false: 
-            for (let i = 0; i < shipLength; i++) {
-                let nextXCoord = parseInt(targetId[2]) + i;
-                if (nextXCoord <= 9) {
-                    let nextId = replaceAt(targetId, nextXCoord, 2);
-                    let nextTile = document.getElementById(nextId)
-                    query(nextTile);
-                }
-            }
-            break;
-        case true: 
-            for (let i = 0; i < shipLength; i++) {
-                let nextXCoord = parseInt(targetId[1]) + i
-                if (nextXCoord <= 9) {
-                    let nextId = replaceAt(targetId, nextXCoord, 1);
-                    let nextTile = document.getElementById(nextId)
-                    query(nextTile);
-                }
-            }
-            break;
-    }
-};
 
 function mouseOver(input) { input.classList.add('boardtileshiphov') }
 function mouseOut(input) { 
@@ -269,6 +248,11 @@ function clickShip(event) {
                     document.querySelector('.guide').textContent = 'All ships have been placed, the game can now begin. Click any tile in Enemy Waters to attack';
                     startGame();
                 }
+                event.placementResult = true;
+                return true;
+            } else {
+                event.placementResult = false;
+                return false;
             }
         });
     }
@@ -302,15 +286,81 @@ function startGame() {
     addInteractivityShots();
 }
 
+function resetGame() {
+    console.log('game reset');
+    addBoardTiles(divBoardEnemy)
+    addBoardTiles(divBoardFriendly)
+    placeComputerShips();
+    removeInteractivity();
+}
+
+function testPlaceShips() {
+    placeUserShips([2, 2], 'Vertical', 'carrier')
+    placeUserShips([3, 2], 'Vertical', 'battleship')
+    placeUserShips([4, 2], 'Vertical', 'cruiser')
+    placeUserShips([5, 2], 'Vertical', 'submarine')
+    placeUserShips([6, 2], 'Vertical', 'destroyer')
+}
+
+function testClickAll() {
+    console.log(`testClickAll running`);
+    let board = document.querySelectorAll('.boardEnemy .boardtile')
+    for (let i = 0; i < 90; i++) {
+        setTimeout(function(){
+            console.log(`Clicking this thing ${board[i].id}`);
+            board[i].click();
+        }, 2000)
+    }
+}
+
+function placeUserShipsAuto() {
+    let boatDock = document.querySelectorAll('.boatdock .boat');
+    console.log(`boatDock: ${boatDock} and boatDock.length: ${boatDock.length}`);
+    for (let i = 0; i < boatDock.length; i++) {
+        console.log(`AutoPlacing ship: ${boatDock}`);
+        let randomInt = getRandomInt(2);
+        console.log(`randomInt: ${randomInt}`);
+        for (let k = -1; k < randomInt; k++) {
+            console.log(`Clicking a ship`);
+            boatDock[i].dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        }
+        let shipPlaced = false;
+        let j = 0;
+        while (shipPlaced === false && j <= 10) {
+            console.log(`Attempting ship placement`);
+            j++;
+            let randomCoord = [getRandomInt(10), getRandomInt(10)];
+            let randomCoordId = convertCoordsFront(randomCoord);
+            const tile = document.getElementById('c' + randomCoordId);
+            tile.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+            const clickEvent = new MouseEvent('click', { bubbles: true });
+            tile.dispatchEvent(clickEvent);
+            console.log('Did ship place correctly?' + clickEvent.placementResult); // true or false
+            shipPlaced = clickEvent.placementResult;
+            if (j > 9) {
+                alert("Infinite Loop");
+             break;
+            }
+            tile.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+        }
+    }
+    //const tile = document.getElementById('c00'); // or any valid tile id
+}
+
+function testProcedure() {
+    //startGame();
+    //testPlaceShips()
+    placeUserShipsAuto()
+}
+
 let playerName = 'Player 1';
 document.querySelector('#startgame').addEventListener('click', startPlacement)
 document.querySelector('.guide').textContent = 'Please enter your name above';
 let divBoardFriendly = document.querySelector(".boardFriendly");
 let divBoardEnemy = document.querySelector(".boardEnemy");
 addBoardTiles(divBoardFriendly)
+//setTimeout(startPlacement, 1000);
 startPlacement()
-
-//remove later
-//addBoardTiles(divBoardEnemy);
-//addInteractivityShots();
-//startGame();
+document.querySelector('#resetGame').addEventListener('click', resetGame)
+document.querySelector('#testing').addEventListener('click', testProcedure)
+document.querySelector('#autoplace').addEventListener('click', placeUserShipsAuto)

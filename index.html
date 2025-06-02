@@ -12,11 +12,11 @@
     <div class="titlebar">Battleship</div>
     <div class="maindisplay">
         <div class="boarddisplay">
-            <div class="boarddisplayE">Enemy Waters
-                <div class="boardEnemy board"></div>
-            </div>
             <div class="boarddisplayF">Friendly Waters
                 <div class="boardFriendly board"></div>
+            </div>
+            <div class="boarddisplayE">Enemy Waters
+                <div class="boardEnemy board"></div>
             </div>
         </div>
         <div class="sidepanel">
@@ -24,7 +24,11 @@
                 <label for="name">Name:</label>
                 <input type="text" name="name" id="name">
                 <input type="submit" value="Start Game!" id="startgame" onclick="return false">
+                
             </form>
+            <button id="resetGame">Reset Game</button>
+            <button id="autoplace">Auto Place</button>
+            <button id="testing">Test Procedure</button>
             <div class="guide"></div>
             <div class="boatdock">
                 Ship Dock:  

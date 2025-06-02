@@ -31,21 +31,22 @@ export class player {
             console.log(`shipName hit: ${shipName}. Coord checked: ${this.water.board[coordinate[1]][coordinate[0]]}`);
             this.markShipHit(shipName);
             //console.log(`checkShipHit true`);
-            return true;
+            return 'hitShip';
         } else {
             //console.log(`checkShipHit false`);
-            return false;
+            return 'hitWater';
         }
     }
 
     receiveAttack(coord) {
         //console.log(`receiveAttack coord: ${coord}`);
         //console.log(`Receiving attack to ${this.name}`);
-        const isHit = this.water.receiveAttack(coord);
-        if (isHit) {
+        const hitValid = this.water.receiveAttack(coord);
+        if (hitValid === 'hitValid') {
             //console.log(`receiveAttack ship has been hit`);
             return this.checkShipHit(coord)
         }
+        return 'hitInvalid';
     }
 
     checkShipsSunk() {
